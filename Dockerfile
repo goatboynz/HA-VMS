@@ -1,19 +1,35 @@
-ARG BUILD_FROM
+ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:3.19
 FROM $BUILD_FROM
 
-# Install Python and required packages
+# Install system dependencies
 RUN apk add --no-cache \
     python3 \
     py3-pip \
-    py3-pillow \
+    py3-wheel \
+    py3-setuptools \
     sqlite \
-    && pip3 install --no-cache-dir \
-        flask \
-        flask-sqlalchemy \
-        werkzeug \
-        pillow \
-        pandas \
-        openpyxl
+    gcc \
+    musl-dev \
+    python3-dev \
+    jpeg-dev \
+    zlib-dev \
+    freetype-dev \
+    lcms2-dev \
+    openjpeg-dev \
+    tiff-dev \
+    tk-dev \
+    tcl-dev
+
+# Upgrade pip and install Python packages
+RUN pip3 install --upgrade pip setuptools wheel
+
+# Install Python packages one by one to better handle errors
+RUN pip3 install --no-cache-dir flask==2.3.3
+RUN pip3 install --no-cache-dir flask-sqlalchemy==3.0.5
+RUN pip3 install --no-cache-dir werkzeug==2.3.7
+RUN pip3 install --no-cache-dir pillow==10.0.1
+RUN pip3 install --no-cache-dir pandas==2.1.1
+RUN pip3 install --no-cache-dir openpyxl==3.1.2
 
 # Copy application files
 COPY app/ /app/
