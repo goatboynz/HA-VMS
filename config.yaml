@@ -26,4 +26,4 @@ schema:
   admin_password: str
   database_path: str
   max_file_size: int(1048576,52428800)
-image: ghcr.io/goatboynz/ha-vms-{arch}
+image: "ghcr.io/goatboynz/ha-vms"
