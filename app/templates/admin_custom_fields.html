@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Custom Fields - Admin{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="fas fa-cogs"></i> Custom Fields Management</h2>
+        
+        <!-- Add New Field Form -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-plus"></i> Add New Custom Field</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_custom_field') }}">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="field_name" class="form-label">Field Name</label>
+                                <input type="text" class="form-control" id="field_name" name="field_name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="field_type" class="form-label">Field Type</label>
+                                <select class="form-select" id="field_type" name="field_type" required>
+                                    <option value="text">Text</option>
+                                    <option value="textarea">Textarea</option>
+                                    <option value="number">Number</option>
+                                    <option value="email">Email</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="is_required" name="is_required">
+                                    <label class="form-check-label" for="is_required">
+                                        Required Field
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Field
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Existing Fields -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-list"></i> Existing Custom Fields</h5>
+            </div>
+            <div class="card-body">
+                {% if custom_fields %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Field Name</th>
+                                    <th>Field Type</th>
+                                    <th>Required</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for field in custom_fields %}
+                                <tr>
+                                    <td>{{ field.field_name }}</td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ field.field_type }}</span>
+                                    </td>
+                                    <td>
+                                        {% if field.is_required %}
+                                            <span class="badge bg-warning">Required</span>
+                                        {% else %}
+                                            <span class="badge bg-light text-dark">Optional</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ field.created_at }}</td>
+                                    <td>
+                                        <a href="{{ url_for('delete_custom_field', field_id=field.id) }}" 
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Are you sure you want to delete this field? This will also delete all associated data.')">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> No custom fields created yet.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

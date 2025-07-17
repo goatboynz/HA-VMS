@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Visitor Details - Admin{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2><i class="fas fa-user"></i> Visitor Details</h2>
+            <div>
+                <span class="badge bg-{{ 'success' if visitor.status == 'signed_in' else 'secondary' }} fs-6">
+                    {{ visitor.status.replace('_', ' ').title() }}
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-info-circle"></i> Basic Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> {{ visitor.first_name }} {{ visitor.last_name }}</p>
+                                <p><strong>Phone:</strong> {{ visitor.phone_number or 'Not provided' }}</p>
+                                <p><strong>Email:</strong> {{ visitor.email or 'Not provided' }}</p>
+                                <p><strong>Business:</strong> {{ visitor.business_name or 'Not provided' }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Purpose:</strong> {{ visitor.purpose_of_visit or 'Not provided' }}</p>
+                                <p><strong>Sign-In Time:</strong> {{ visitor.sign_in_time }}</p>
+                                <p><strong>Sign-Out Time:</strong> {{ visitor.sign_out_time or 'Still signed in' }}</p>
+                            </div>
+                        </div>
+                        
+                        {% if visitor.address %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <p><strong>Address:</strong><br>{{ visitor.address }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if custom_data %}
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Additional Information</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for data in custom_data %}
+                            <p><strong>{{ data.field_name }}:</strong> {{ data.field_value }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-4">
+                {% if visitor.photo_path %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-camera"></i> Photo</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="{{ url_for('get_photo', visitor_id=visitor.id) }}" 
+                             class="img-fluid visitor-photo rounded" 
+                             alt="Visitor Photo">
+                    </div>
+                </div>
+                {% else %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-camera"></i> Photo</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="alert alert-info">
+                            <i class="fas fa-camera-retro fa-3x mb-2"></i><br>
+                            No photo provided
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <a href="{{ url_for('admin_visitors') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Visitors List
+            </a>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
