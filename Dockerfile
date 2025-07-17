@@ -5,31 +5,29 @@ FROM $BUILD_FROM
 RUN apk add --no-cache \
     python3 \
     py3-pip \
-    py3-wheel \
-    py3-setuptools \
     sqlite \
     gcc \
     musl-dev \
     python3-dev \
     jpeg-dev \
     zlib-dev \
-    freetype-dev \
-    lcms2-dev \
-    openjpeg-dev \
-    tiff-dev \
-    tk-dev \
-    tcl-dev
+    freetype-dev
 
-# Upgrade pip and install Python packages
-RUN pip3 install --upgrade pip setuptools wheel
+# Create virtual environment to avoid conflicts
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# Install Python packages one by one to better handle errors
-RUN pip3 install --no-cache-dir flask==2.3.3
-RUN pip3 install --no-cache-dir flask-sqlalchemy==3.0.5
-RUN pip3 install --no-cache-dir werkzeug==2.3.7
-RUN pip3 install --no-cache-dir pillow==10.0.1
-RUN pip3 install --no-cache-dir pandas==2.1.1
-RUN pip3 install --no-cache-dir openpyxl==3.1.2
+# Upgrade pip in virtual environment
+RUN pip install --upgrade pip
+
+# Install Python packages with specific versions that work well together
+RUN pip install --no-cache-dir \
+    flask==2.3.3 \
+    flask-sqlalchemy==3.0.5 \
+    werkzeug==2.3.7 \
+    pillow==10.0.1 \
+    pandas==2.1.1 \
+    openpyxl==3.1.2
 
 # Copy application files
 COPY app/ /app/
