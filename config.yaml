@@ -1,5 +1,5 @@
 name: Visitor Management System
-version: "1.0.0"
+version: "1.0.1"
 slug: visitor-management-system
 description: A comprehensive visitor management system for tracking visitors with sign-in/out capabilities and admin backend
 url: https://github.com/goatboynz/HA-VMS
@@ -12,10 +12,14 @@ arch:
 startup: application
 boot: auto
 init: false
+ingress: true
+ingress_port: 8080
+panel_icon: mdi:account-group
+panel_title: Visitor Management
+panel_admin: false
 ports:
-  8080/tcp: 8080
-ports_description:
-  8080/tcp: Web interface
+  8080/tcp: null
+webui: "[PROTO:ssl]://[HOST]:[PORT:8099]/api/hassio_ingress/[SLUG]"
 options:
   admin_username: admin
   admin_password: changeme

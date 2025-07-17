@@ -5,6 +5,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify, send_file
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
 import pandas as pd
 from PIL import Image
 import io
@@ -12,6 +13,9 @@ import base64
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+# Configure for Home Assistant ingress
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 # Configuration
 ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
@@ -240,10 +244,7 @@ def admin_dashboard():
                          today_visitors=today_visitors,
                          recent_visitors=recent_visitors)
 
-if __name__ == '__main__':
-    init_db()
-    app.run(host='0.0.0.0', port=8080, debug=False)@app.route('
-/admin/visitors')
+@app.route('/admin/visitors')
 def admin_visitors():
     """Admin visitors list"""
     if 'admin_logged_in' not in session:
@@ -415,3 +416,7 @@ def get_photo(visitor_id):
     else:
         # Return a default placeholder image or 404
         return '', 404
+if __nam
+e__ == '__main__':
+    init_db()
+    app.run(host='0.0.0.0', port=8080, debug=False)
