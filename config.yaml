@@ -1,5 +1,5 @@
 name: Visitor Management System
-version: "1.0.1"
+version: "1.0.2"
 slug: visitor-management-system
 description: A comprehensive visitor management system for tracking visitors with sign-in/out capabilities and admin backend
 url: https://github.com/goatboynz/HA-VMS
