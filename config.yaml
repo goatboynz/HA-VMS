@@ -1,8 +1,8 @@
-name: Visitor Management System
+name: "Visitor Management System"
 version: "1.0.2"
-slug: visitor-management-system
-description: A comprehensive visitor management system for tracking visitors with sign-in/out capabilities and admin backend
-url: https://github.com/goatboynz/HA-VMS
+slug: "visitor-management-system"
+description: "A comprehensive visitor management system for tracking visitors with sign-in/out capabilities and admin backend"
+url: "https://github.com/goatboynz/HA-VMS"
 arch:
   - armhf
   - armv7
@@ -14,20 +14,19 @@ boot: auto
 init: false
 ingress: true
 ingress_port: 8080
-panel_icon: mdi:account-group
-panel_title: Visitor Management
+panel_icon: "mdi:account-group"
+panel_title: "Visitor Management"
 panel_admin: false
 ports:
   8080/tcp: null
-webui: "[PROTO:ssl]://[HOST]:[PORT:8099]/api/hassio_ingress/[SLUG]"
 options:
-  admin_username: admin
-  admin_password: changeme
-  database_path: /data/visitors.db
+  admin_username: "admin"
+  admin_password: "changeme"
+  database_path: "/data/visitors.db"
   max_file_size: 10485760
 schema:
-  admin_username: str
-  admin_password: str
-  database_path: str
-  max_file_size: int(1048576,52428800)
+  admin_username: "str"
+  admin_password: "str"
+  database_path: "str"
+  max_file_size: "int(1048576,52428800)"
 image: "ghcr.io/goatboynz/ha-vms:latest"

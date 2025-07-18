@@ -1,0 +1,30 @@
+# Temporary fallback configuration - use if v1.0.1 build fails
+name: Visitor Management System
+version: "1.0.0"
+slug: visitor-management-system
+description: A comprehensive visitor management system for tracking visitors with sign-in/out capabilities and admin backend
+url: https://github.com/goatboynz/HA-VMS
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+startup: application
+boot: auto
+init: false
+ports:
+  8080/tcp: 8080
+ports_description:
+  8080/tcp: Web interface
+options:
+  admin_username: admin
+  admin_password: changeme
+  database_path: /data/visitors.db
+  max_file_size: 10485760
+schema:
+  admin_username: str
+  admin_password: str
+  database_path: str
+  max_file_size: int(1048576,52428800)
+image: "ghcr.io/goatboynz/ha-vms:1.0.0"
