@@ -416,7 +416,6 @@ def get_photo(visitor_id):
     else:
         # Return a default placeholder image or 404
         return '', 404
-if __nam
-e__ == '__main__':
+if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=8080, debug=False)
